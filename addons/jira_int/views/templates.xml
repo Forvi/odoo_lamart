@@ -1,0 +1,33 @@
+<odoo>
+    <data>
+        <template id="task">
+                <div class="oe_structure"/>
+                <h1>Задачи Jira</h1>
+                <t t-if="tasks">
+                    <ul>
+                        <t t-foreach="tasks" t-as="task">
+                            <t t-foreach="task" t-as="i">
+                                <li>
+                                    <strong>Название:</strong> <t t-esc="i.name"/> -
+                                    <strong>Статус:</strong> <t t-esc="i.status"/> -
+                                    <strong>Story Points:</strong> <t t-esc="i.story_point"/>
+                                </li>
+                            </t>
+                        </t>
+                    </ul>
+                </t>
+                <t t-else="">
+                    <p>Нет доступных задач.</p>
+                </t>
+        </template>
+    </data>
+</odoo>
+
+
+<!--<odoo>-->
+<!--    <data>-->
+<!--        <template>-->
+<!--            <-->
+<!--        </template>-->
+<!--    </data>-->
+<!--</odoo>-->
