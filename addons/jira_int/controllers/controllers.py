@@ -9,7 +9,7 @@ from odoo.http import request
 JIRA_URL = 'https://nforvi.atlassian.net/rest/agile/1.0/board'
 
 USERNAME = 'nforvi@mail.ru'  # Замените на  email
-API_TOKEN = ''
+API_TOKEN = 'ATATT3xFfGF0bcJ1b43-ktl1j1xZk-oPqBpUVZ7S5IsEeV_yh8paP7rmyG5-AcaJpOoR_kKDK8S8YcZ_xqW9RnCaQVGm6tEB-fmOXwdHSXZigrYOOKtHBIL3dnbMz5oE33HIg64xVfKRqmbSmX-u55HeLK3HHPcGWJ0ahPWJKDz28L3D1WN5K-4=358E948E'  # Замените на API токен
 
 auth = HTTPBasicAuth(USERNAME, API_TOKEN)
 headers = {
