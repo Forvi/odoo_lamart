@@ -1,16 +1,23 @@
 <odoo>
     <data>
-        <template id="task">
+<!--        <template id="assets_backend" inherit_id="web.assets_backend">-->
+<!--            <xpath expr="." position="inside">-->
+<!--                <link rel="stylesheet" type="text/css" href="/jira_int/static/src/css/main.css"/>-->
+<!--            </xpath>-->
+<!--        </template>-->
+
+            <template id="task">
                 <div class="oe_structure"/>
                 <h1>Задачи Jira</h1>
-                <t t-if="tasks">
+                <t t-if="issues">
                     <ul>
-                        <t t-foreach="tasks" t-as="task">
-                            <t t-foreach="task" t-as="i">
+                        <t t-foreach="issues" t-as="i">
+                            <strong>Спринт: </strong><t t-esc="i.name_sprint"/>
+                            <t t-foreach="i.tasks" t-as="j">
                                 <li>
-                                    <strong>Название:</strong> <t t-esc="i.name"/> -
-                                    <strong>Статус:</strong> <t t-esc="i.status"/> -
-                                    <strong>Story Points:</strong> <t t-esc="i.story_point"/>
+                                    <strong>Название:</strong> <t t-esc="j.name"/> -
+                                    <strong>Статус:</strong> <t t-esc="j.status"/> -
+                                    <strong>Story Points:</strong> <t t-esc="j.story_point"/>
                                 </li>
                             </t>
                         </t>
@@ -19,15 +26,6 @@
                 <t t-else="">
                     <p>Нет доступных задач.</p>
                 </t>
-        </template>
+            </template>
     </data>
 </odoo>
-
-
-<!--<odoo>-->
-<!--    <data>-->
-<!--        <template>-->
-<!--            <-->
-<!--        </template>-->
-<!--    </data>-->
-<!--</odoo>-->
