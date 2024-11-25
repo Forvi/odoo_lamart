@@ -1,4 +1,4 @@
-#!/home/nikita/odoo18/venv-odoo18/bin/python3
+#!/home/nikita/Desktop/urfu_project/odoo_lamart/venv-odoo18/bin/python
 
 # Author:
 # Contact: grubert@users.sf.net
@@ -15,12 +15,13 @@ man page writer to output from ReStructuredText source.
 import locale
 try:
     locale.setlocale(locale.LC_ALL, '')
-except:
+except Exception:
     pass
 
 from docutils.core import publish_cmdline, default_description
 from docutils.writers import manpage
 
-description = ("Generates plain unix manual documents.  " + default_description)
+description = ("Generates plain unix manual documents.  "
+               + default_description)
 
 publish_cmdline(writer=manpage.Writer(), description=description)
