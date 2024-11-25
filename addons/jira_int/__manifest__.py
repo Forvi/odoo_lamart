@@ -19,12 +19,15 @@ Long description of module's purpose
 
     # any module necessary for this one to work correctly
     'depends': ['base'],
+    'css': ['static/src/css/main.css'],
+
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'views/assignee.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

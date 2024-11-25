@@ -17,39 +17,21 @@ headers = {
 }
 
 class JiraInt(http.Controller):
-    @http.route('/jira_int/jira_int', auth='public')
-    def index(self, **kw):
-        task = self.get_tasks_a()
-        return task
-
-    def get_tasks_a(self):
-        JIRA_URL = 'https://nforvi.atlassian.net/rest/agile/1.0/board'  # Замените на  URL Jira
-        USERNAME = 'nforvi@mail.ru'  # Замените на email
-        API_TOKEN = 'ATATT3xFfGF0bcJ1b43-ktl1j1xZk-oPqBpUVZ7S5IsEeV_yh8paP7rmyG5-AcaJpOoR_kKDK8S8YcZ_xqW9RnCaQVGm6tEB-fmOXwdHSXZigrYOOKtHBIL3dnbMz5oE33HIg64xVfKRqmbSmX-u55HeLK3HHPcGWJ0ahPWJKDz28L3D1WN5K-4=358E948E'  # Замените на API токен
-
-        auth = HTTPBasicAuth(USERNAME, API_TOKEN)
-
-        headers = {
-            "Accept": "application/json"
-        }
-
-        response = requests.request(
-            "GET",
-            JIRA_URL,
-            headers=headers,
-            auth=auth
-        )
-
-        # print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
-        return json.dumps(json.loads(response.text))
-
-
     @http.route('/jira_int/tasks', auth='public', website=True)
     def task(self, **kw):
         tasks = get_sprints()
-
         return http.request.render('jira_int.task', {
-            'tasks': tasks
+            'issues': tasks
+        })
+
+
+    @http.route('/jira_int/assigneetasks', auth='public', website=True)
+    def assignee(self, **kw):
+        name = 'Nikita Lavrov'
+        assignee_tasks = get_issues_by_assignee(name)
+        return http.request.render('jira_int.assignee', {
+            'name': name,
+            'assignee_tasks': assignee_tasks
         })
 
 
@@ -60,19 +42,37 @@ class Task:
         self.name = name
 
 
+class Sprint:
+    def __init__(self, name_sprint, tasks):
+        self.name_sprint = name_sprint
+        self.tasks = tasks
+
+class taskByAssigne:
+    def __init__(self, key, assignee_task, story_point):
+        self.key = key
+        self.assignee_task = assignee_task
+        self.story_point = story_point
+
+
 def get_sprints():
+
     response = requests.request(
-        "GET",
-        JIRA_URL,
-        headers=headers,
-        auth=auth
+       "GET",
+       JIRA_URL,
+       headers=headers,
+       auth=auth
     )
 
     sprints = response.json().get("values")
     list_task = []
+
     for sprint in sprints:
-        task = get_tasks_on_sprint(sprint['id'])
-        list_task.append(task)
+
+        name_sprint, tasks = get_tasks_on_sprint(sprint['id'])
+
+        sprint = Sprint(name_sprint, tasks)
+        list_task.append(sprint)
+
     return list_task
 
 
@@ -86,6 +86,7 @@ def get_tasks_on_sprint(id_board):
     )
 
     tasks = response.json().get("issues")
+    name_sprint = tasks[0].get("fields").get("project").get("name")
 
     task_on_sprint = []
     for task in tasks:
@@ -95,7 +96,26 @@ def get_tasks_on_sprint(id_board):
         new_task = Task(status, story_point, name)
         task_on_sprint.append(new_task)
 
-    return task_on_sprint
+    return name_sprint, task_on_sprint
+
+def get_issues_by_assignee(assignee_name):
+    JIRA_URL = f"https://nforvi.atlassian.net/rest/api/2/search?jql=assignee=\"{assignee_name}\""
+    response = requests.get(JIRA_URL, headers=headers, auth=auth)
+
+    if response.status_code == 200:
+        issues = response.json().get("issues")
+        result = []
+        for issue in issues:
+            issue_key = issue.get("key")
+            assignee_name = issue.get('fields').get('summary')
+            story_point = issue.get('fields').get('customfield_10016')
+            tasks = taskByAssigne(issue_key, assignee_name, story_point)
+            result.append(tasks)
+
+        return result
+    else:
+        print(f"Ошибка: {response.status_code}")
+        return None
 
     #
     # @http.route('/jira_int/jira_int/objects/<model("jira_int.jira_int"):obj>', auth='public')

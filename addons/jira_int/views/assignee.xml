@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+        <template id="assignee">
+            <div class="oe_structure"/>
+            <h1>Задачи Jira для <t t-esc="name"/></h1>
+            <t t-if="assignee_tasks">
+                <ul>
+                    <t t-foreach="assignee_tasks" t-as="i">
+                        <li>
+                            <t t-esc="i.key"/>,
+                            <t t-esc="i.assignee_task"/>,
+                            <t t-esc="i.story_point"/>
+                        </li>
+                    </t>
+                </ul>
+            </t>
+            <t t-else="">
+                <p>Нет доступных задач.</p>
+            </t>
+        </template>
+    </data>
+</odoo>
