@@ -1,6 +1,7 @@
 <odoo>
     <data>
         <template id="assignee">
+            <link rel="stylesheet" type="text/css" href="/jira_int/static/src/css/main.css"/>
             <div class="oe_structure"/>
             <h1>Задачи Jira для <t t-esc="name"/></h1>
             <t t-if="assignee_tasks">
