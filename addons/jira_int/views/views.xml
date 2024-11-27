@@ -56,5 +56,11 @@
     <menuitem name="Server to list" id="jira_int" parent="jira_int.menu_2"
               action="jira_int.action_server"/>
 -->
+    <template id="assets_backend" name="jira_int assets">
+    <xpath expr="." position="inside">
+        <link rel="stylesheet" type="text/css" href="/jira_int/static/src/css/main.css"/>
+    </xpath>
+    </template>
+
   </data>
 </odoo>

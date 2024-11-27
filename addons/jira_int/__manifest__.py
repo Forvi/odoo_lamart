@@ -18,8 +18,7 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
-    'css': ['static/src/css/main.css'],
+    'depends': ['base', 'web', 'website'],
 
 
     # always loaded
